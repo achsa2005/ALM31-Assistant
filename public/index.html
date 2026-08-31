@@ -611,15 +611,30 @@
         }
 
         function findVoiceForLanguage(langCode) {
-            const targetLang = SPEECH_LANG_MAP[langCode] || 'en-US';
-            const targetPrefix = targetLang.split('-')[0];
-
-            if (!cachedVoices.length) refreshVoiceCache();
-
-            let voice = cachedVoices.find(v => v.lang === targetLang);
-            if (!voice) {
-                voice = cachedVoices.find(v => v.lang.split('-')[0] === targetPrefix);
+            if (!cachedVoices || cachedVoices.length === 0) {
+                console.warn('No voices loaded');
+                return null;
             }
+
+            const targetLang = SPEECH_LANG_MAP[langCode] || 'en-US';
+            
+            // Normalize separators: convert both underscore and hyphen to hyphen for comparison
+            const normalizeCode = (code) => code.replace(/_/g, '-').toLowerCase();
+            const targetNormalized = normalizeCode(targetLang);
+            
+            // Try exact match first (after normalization)
+            let voice = cachedVoices.find(v => 
+                normalizeCode(v.lang) === targetNormalized
+            );
+            
+            if (voice) return voice;
+            
+            // Fallback: match just the language part (e.g., 'en' from 'en-US' or 'en_US')
+            const targetPrefix = targetNormalized.split('-')[0];
+            voice = cachedVoices.find(v => 
+                normalizeCode(v.lang).split('-')[0] === targetPrefix
+            );
+            
             return voice || null;
         }
 
