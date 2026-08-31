@@ -626,64 +626,86 @@
 
         // Find the best matching voice for a language code (e.g. 'ml' -> 'ml-IN').
         // Falls back to any voice sharing the same base language prefix.
-        function findVoiceForLanguage(langCode) {
-            const targetLang = SPEECH_LANG_MAP[langCode] || 'en-US';
-            const targetPrefix = targetLang.split('-')[0]; // e.g. 'ml'
-
-            if (!cachedVoices.length) refreshVoiceCache();
-
-            // Exact match first (e.g. 'ml-IN')
-            let voice = cachedVoices.find(v => v.lang === targetLang);
-            // Fallback: same language prefix, any region (e.g. 'ml-*')
-            if (!voice) {
-                voice = cachedVoices.find(v => v.lang.split('-')[0] === targetPrefix);
-            }
-            return voice || null;
+      function findVoiceForLanguage(langCode, retries = 15) {
+    if (!cachedVoices || cachedVoices.length === 0) {
+        if (retries > 0) {
+            setTimeout(() => findVoiceForLanguage(langCode, retries - 1), 100);
+            return null;
         }
+        console.warn('🔊 No voices available');
+        return null;
+    }
 
-        function speakResponse(text) {
-            if (!window.speechSynthesis) {
-                console.error('🔊 Speech Synthesis not supported in this browser');
-                return;
-            }
+    const targetLang = SPEECH_LANG_MAP[langCode] || 'en-US';
+    const normalizeCode = (code) => code.replace(/_/g, '-').toLowerCase();
+    const targetNormalized = normalizeCode(targetLang);
+    const targetPrefix = targetNormalized.split('-')[0];
 
-            // Cancel any ongoing speech
-            window.speechSynthesis.cancel();
+    // Strategy 1: Exact match (normalized)
+    let voice = cachedVoices.find(v => normalizeCode(v.lang) === targetNormalized);
+    if (voice) {
+        console.log(`✅ Found exact: ${voice.lang}`);
+        return voice;
+    }
 
-            const matchedVoice = findVoiceForLanguage(selectedLanguage);
+    // Strategy 2: Language prefix match
+    voice = cachedVoices.find(v => normalizeCode(v.lang).split('-')[0] === targetPrefix);
+    if (voice) {
+        console.log(`✅ Found prefix: ${voice.lang}`);
+        return voice;
+    }
 
-            // No voice available for this language on this device/browser —
-            // don't attempt to speak (it would either fail silently or speak
-            // in the wrong language/accent). Let the user know instead.
-            if (!matchedVoice) {
-                showVoiceUnavailableNotice(selectedLanguage);
-                return;
-            }
+    // Strategy 3: Starts with language prefix
+    voice = cachedVoices.find(v => normalizeCode(v.lang).startsWith(targetPrefix));
+    if (voice) {
+        console.log(`✅ Found language: ${voice.lang}`);
+        return voice;
+    }
 
-            // Create utterance
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.voice = matchedVoice;
-            utterance.lang = matchedVoice.lang;
-            utterance.rate = 1.0;
-            utterance.pitch = 1.0;
-            utterance.volume = 1.0;
+    console.warn(`❌ No voice for ${langCode}`);
+    return null;
+}
 
-            utterance.onstart = () => {
-                console.log('🔊 Speaking with voice:', matchedVoice.name);
-            };
+        function speakResponse(text, language = 'en', retries = 15) {
+    if (!window.speechSynthesis) {
+        console.error('🔊 Speech not supported');
+        return;
+    }
 
-            utterance.onend = () => {
-                console.log('🔊 Done speaking');
-            };
+    refreshVoiceCache();
+    const matchedVoice = findVoiceForLanguage(language);
 
-            utterance.onerror = (event) => {
-                console.error('🔊 Speech error:', event.error);
-            };
+    if (!matchedVoice && retries > 0) {
+        console.log(`🔊 Retrying voice... (${retries} left)`);
+        setTimeout(() => speakResponse(text, language, retries - 1), 150);
+        return;
+    }
 
-            // Start speaking
-            window.speechSynthesis.speak(utterance);
-            console.log('🔊 Speaking:', text.substring(0, 100) + '...');
-        }
+    if (!matchedVoice) {
+        console.warn(`🔊 No voice for ${language}`);
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = matchedVoice;
+    utterance.lang = matchedVoice.lang;
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    utterance.onstart = () => console.log(`🔊 Speaking...`);
+    utterance.onend = () => console.log(`✅ Done`);
+    utterance.onerror = (e) => console.error(`🔊 Error: ${e.error}`);
+
+    try {
+        window.speechSynthesis.speak(utterance);
+        console.log(`✅ Speaking in ${language}`);
+    } catch (error) {
+        console.error('🔊 Speech error:', error);
+    }
+}
 
         // Small inline note shown when TTS voice for the chosen language
         // isn't installed on this browser/device. The text answer is still
@@ -908,7 +930,7 @@
 
             // 🔊 AUTOMATICALLY SPEAK THE RESPONSE
             setTimeout(() => {
-                speakResponse(answerText);
+                speakResponse(answerText, selectedLanguage);
             }, 500);
         } 
 
