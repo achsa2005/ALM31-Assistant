@@ -67,7 +67,7 @@ const VIDEO_MAP = [
         ]
     },
     {
-        file: "videos/INDUVIDUAL_HARMONICS__mp4.mp4",
+        file: "videos/INDUVIDUAL_HARMONICS__.mp4",
         keywords: [
             "harmonics", "individual harmonics", "harmonic analysis", "harmonic distortion",
             "harmonic content", "harmonic measurement", "harmonic voltage", "harmonic current",
