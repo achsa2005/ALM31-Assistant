@@ -54,6 +54,7 @@ const VIDEO_MAP = [
             "current crest factor", "current peak factor", "4A CF", "waveform peak current"
         ]
     },
+
     {
         file: "videos/rms_values.mp4",
         keywords: [
@@ -66,6 +67,7 @@ const VIDEO_MAP = [
             "PST", "short-term flicker", "flicker", "voltage flicker"
         ]
     },
+
     {
         file: "videos/INDUVIDUAL_HARMONICS_.mp4",
         keywords: [
@@ -74,6 +76,18 @@ const VIDEO_MAP = [
             "harmonic voltage", "harmonic current",
             "THD", "total harmonic distortion", "harmonic order",
             "fundamental harmonic"
+        ]
+    },
+
+    {
+        file: "videos/power-values.mp4",
+        keywords: [
+            "power values", "power factor", "power factor values", "power measurement",
+            "active power", "reactive power", "apparent power", "distortion power",
+            "energy", "energy consumption", "energy meter", "power quality",
+            "cos phi", "tan phi", "displacement factor", "energies consumed", "energies generated",
+            "energy count", "energy counting", "energy total", "total energy", "energy display",
+            "wh", "varh", "vah", "energy metering", "energy readings"
         ]
     }
 ];
