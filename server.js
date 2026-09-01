@@ -45,27 +45,27 @@ const MODEL_NAME = "gemini-3.1-flash-lite";
 // arms_n_with_min_avg_max.png / arms_n_without_min_avg_max.png images
 // via IMAGE_MAP instead.
 const VIDEO_MAP = [
-  {
-    file: "videos/peak-current.mp4",
-    keywords: [
-      "peak current",
-      "see peak current",
-      "view peak current",
-      "how to see peak current",
-      "positive peak current",
-      "negative peak current",
-      "positive peak",
-      "negative peak",
-      "max peak current",
-      "min peak current",
-      "maximum peak current",
-      "minimum peak current",
-      "current crest factor",
-      "current peak factor",
-      "4A CF",
-      "waveform peak current"
-    ]
-  }
+    {
+        file: "videos/peak-current.mp4",
+        keywords: [
+            "peak current", "see peak current", "view peak current", "how to see peak current",
+            "positive peak current", "negative peak current", "positive peak", "negative peak",
+            "max peak current", "min peak current", "maximum peak current", "minimum peak current",
+            "current crest factor", "current peak factor", "4A CF", "waveform peak current"
+        ]
+    },
+    {
+        file: "videos/RMS_VALUES_CREST_FACTOR_MAX_AND_MIN_RMS_PEAK_FACTOR_PHASOR_DIAGRAM_PEAK_VALUES_K-FACTOR_PST_SHORT-TERM-FLICKER_.mp4",
+        keywords: [
+            "RMS values", "RMS voltage", "RMS current", "root mean square",
+            "crest factor", "peak to RMS", "peak factor", "CF",
+            "max and min RMS", "maximum RMS", "minimum RMS", "averaging",
+            "phasor diagram", "phasor", "fresnel diagram", "vector diagram",
+            "peak values", "positive peak", "negative peak",
+            "K-factor", "K factor", "transformer heating", "harmonic loss",
+            "PST", "short-term flicker", "flicker", "voltage flicker"
+        ]
+    }
 ];
 
 // Normalizes text for matching: lowercases and replaces any run of
