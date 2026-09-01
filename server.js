@@ -1327,8 +1327,10 @@ A: The Erasure of Data submenu in the Configuration menu erases all alarm campai
 const LANGUAGE_NAMES = {
     en: "English",
     ta: "Tamil",
-    hi: "Hindi"
-    
+    hi: "Hindi",
+    ml: "Malayalam",
+    te: "Telugu",
+    kn: "Kannada",
 };
 
 function buildSystemInstruction(languageCode) {

@@ -441,7 +441,7 @@
                 <h2 class="welcome-title">ALM31 Power Quality Analyzer</h2>
                 <p class="welcome-subtitle">Voice &amp; Text Assistant</p>
 
-                <p class="language-hint">Choose your language / மொழியைத் தேர்ந்தெடுக்கவும் / भाषा चुनें / భాష ఎంచుకోండి / ഭാഷ തിരഞ്ഞെടുക്കുക</p>
+                <p class="language-hint">Choose your language / மொழியைத் தேர்ந்தெடுக்கவும் / भाषा चुनें / భాష ఎంచుకోండి / ഭാഷ തിരഞ്ഞെടുക്കുക/ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</p>
 
                 <div class="language-select" id="languageSelect">
                     <button class="lang-btn active" data-lang="en">English</button>
@@ -488,6 +488,7 @@
             <button class="lang-btn" data-lang="hi">हिंदी</button>
             <button class="lang-btn" data-lang="te">తెలుగు</button>
             <button class="lang-btn" data-lang="ml">മലയാളം</button>
+            <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
         </div>
 
         <!-- Chat Box -->
@@ -534,7 +535,8 @@
             ta: 'ta-IN',
             hi: 'hi-IN',
             te: 'te-IN',
-            ml: 'ml-IN'
+            ml: 'ml-IN',
+            kn: 'kn-IN'
         };
 
         let selectedLanguage = 'en';
@@ -720,7 +722,8 @@
                 te: 'Voice playback isn\'t available in Telugu on this device/browser. The text answer above is still accurate.',
                 ta: 'Voice playback isn\'t available in Tamil on this device/browser. The text answer above is still accurate.',
                 hi: 'Voice playback isn\'t available in Hindi on this device/browser. The text answer above is still accurate.',
-                en: 'Voice playback isn\'t available on this device/browser. The text answer above is still accurate.'
+                en: 'Voice playback isn\'t available on this device/browser. The text answer above is still accurate.',
+                kn: 'Voice playback isn\'t available in Kannada on this device/browser. The text answer above is still accurate.'
             };
             const message = noticeMap[langCode] || noticeMap.en;
 
