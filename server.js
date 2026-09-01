@@ -55,7 +55,7 @@ const VIDEO_MAP = [
         ]
     },
     {
-        file: "videos/RMS_VALUES_CREST_FACTOR_MAX_AND_MIN_RMS_PEAK_FACTOR_PHASOR_DIAGRAM_PEAK_VALUES_K-FACTOR_PST_SHORT-TERM-FLICKER_.mp4",
+        file: "videos/rms_values.mp4",
         keywords: [
             "RMS values", "RMS voltage", "RMS current", "root mean square",
             "crest factor", "peak to RMS", "peak factor", "CF",
