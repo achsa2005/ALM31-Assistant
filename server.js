@@ -54,9 +54,8 @@ const VIDEO_MAP = [
             "current crest factor", "current peak factor", "4A CF", "waveform peak current"
         ]
     },
-
     {
-        file: "videos/rms_values.mp4",
+        file: "videos/RMS_VALUES_CREST_FACTOR_MAX_AND_MIN_RMS_PEAK_FACTOR_PHASOR_DIAGRAM_PEAK_VALUES_K-FACTOR_PST_SHORT-TERM-FLICKER_.mp4",
         keywords: [
             "RMS values", "RMS voltage", "RMS current", "root mean square",
             "crest factor", "peak to RMS", "peak factor", "CF",
@@ -67,18 +66,14 @@ const VIDEO_MAP = [
             "PST", "short-term flicker", "flicker", "voltage flicker"
         ]
     },
-
     {
-        file: "videos/INDUVIDUAL_HARMONICS_.mp4",
+        file: "videos/INDUVIDUAL_HARMONICS__mp4.mp4",
         keywords: [
-            "harmonics", "individual harmonics", "harmonic analysis",
-            "harmonic distortion", "harmonic content", "harmonic measurement",
-            "harmonic voltage", "harmonic current",
-            "THD", "total harmonic distortion", "harmonic order",
-            "fundamental harmonic"
+            "harmonics", "individual harmonics", "harmonic analysis", "harmonic distortion",
+            "harmonic content", "harmonic measurement", "harmonic voltage", "harmonic current",
+            "THD", "total harmonic distortion", "harmonic order", "fundamental harmonic"
         ]
     },
-
     {
         file: "videos/power-values.mp4",
         keywords: [
@@ -89,9 +84,18 @@ const VIDEO_MAP = [
             "energy count", "energy counting", "energy total", "total energy", "energy display",
             "wh", "varh", "vah", "energy metering", "energy readings"
         ]
-    }
+    },
+    {
+    file: "videos/TREND-RECORDING_.mp4",
+    keywords: [
+        "trend mode", "trend recording", "recording schedule", "memory usage",
+        "trend mode screen", "recording list", "recording parameters", "recording display",
+        "display recordings", "trend data", "trending", "record trend",
+        "configure trend", "trend period", "recording period", "trend window",
+        "data logging", "continuous recording", "trending data", "trend analysis"
+    ]
+}
 ];
-
 // Normalizes text for matching: lowercases and replaces any run of
 // non-alphanumeric characters (periods, hyphens, slashes, etc.) with a
 // single space. This means "MAX.-MIN.", "Max-Min", and "max min" all
