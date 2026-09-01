@@ -65,6 +65,16 @@ const VIDEO_MAP = [
             "K-factor", "K factor", "transformer heating", "harmonic loss",
             "PST", "short-term flicker", "flicker", "voltage flicker"
         ]
+    },
+    {
+        file: "videos/INDUVIDUAL_HARMONICS_.mp4",
+        keywords: [
+            "harmonics", "individual harmonics", "harmonic analysis",
+            "harmonic distortion", "harmonic content", "harmonic measurement",
+            "harmonic voltage", "harmonic current",
+            "THD", "total harmonic distortion", "harmonic order",
+            "fundamental harmonic"
+        ]
     }
 ];
 
