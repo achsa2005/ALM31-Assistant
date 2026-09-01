@@ -67,13 +67,43 @@ const VIDEO_MAP = [
         ]
     },
     {
-        file: "videos/INDIVIDUAL_HARMONICS_.mp4",
-        keywords: [
-            "harmonics", "individual harmonics", "harmonic analysis", "harmonic distortion",
-            "harmonic content", "harmonic measurement", "harmonic voltage", "harmonic current",
-            "THD", "total harmonic distortion", "harmonic order", "fundamental harmonic"
-        ]
-    },
+    file: "videos/INDIVIDUAL_HARMONICS_.mp4",
+    keywords: [
+        // Normal spelling
+        "harmonics",
+        "harmonic",
+        "individual harmonics",
+        "individual harmonic",
+        "harmonic analysis",
+        "harmonic distortion",
+        "harmonic content",
+        "harmonic measurement",
+        "harmonic voltage",
+        "harmonic current",
+        "harmonic order",
+        "fundamental harmonic",
+
+        // Common typing / speech-recognition mistakes
+        "hormonics",
+        "hormonic",
+        "hormonics analysis",
+        "hormonic analysis",
+        "hormonics distortion",
+        "hormonic distortion",
+        "hormonics voltage",
+        "hormonics current",
+
+        // Related technical terms
+        "THD",
+        "total harmonic distortion",
+        "harmonic spectrum",
+        "harmonic frequency",
+        "harmonic frequencies",
+        "harmonic level",
+        "harmonic levels",
+        "harmonic measurement"
+    ]
+},
     {
         file: "videos/power-values.mp4",
         keywords: [
