@@ -600,6 +600,7 @@ const IMAGE_MAP = [
 const STEP_IMAGE_SEQUENCES = [
 
   {
+    title: "🌐 Choice of Language",
     keywords: [
       "choice of language",
       "select language",
@@ -633,7 +634,9 @@ const STEP_IMAGE_SEQUENCES = [
   },
 
   {
+    title: "⚙️ Date & Time Setup",
     keywords: [
+      
       "set date",
       "set time",
       "date time",
@@ -654,12 +657,12 @@ const STEP_IMAGE_SEQUENCES = [
 
       {
         image: "images/Date_and_time_display.png",
-        caption: "Select the Date Time option from the menu."
+        caption: "Select the Date Time option from the menu and press ENTER."
       },
 
       {
         image: "images/Date_and_Time_inside_button.png",
-        caption: "Use the left and right arrow buttons to move between the date and time fields."
+        caption: "Use the left and right arrow buttons to move between the date and time fields and press ENTER to confirm."
       },
 
       {
@@ -704,11 +707,12 @@ function findMatchingStepSequence(customerQuestion, aiAnswer = "") {
     return null;
   }
 
-  return bestMatch.steps.map((s, index) => ({
+ return bestMatch.steps.map((s, index) => ({
     step: index + 1,
     url: "/" + encodeURI(s.image),
-    caption: s.caption
-  }));
+    caption: s.caption,
+    title: bestMatch.title
+}));
 }
 
 function findMatchingImage(customerQuestion, aiAnswer) {
