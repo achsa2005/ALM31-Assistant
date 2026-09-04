@@ -591,8 +591,96 @@ const IMAGE_MAP = [
   },
 ];
 
+// ============================================================
+// STEP-BY-STEP IMAGE SEQUENCES
+// For answers that are numbered instructions, show one image
+// per step (like a mini walkthrough) instead of a single image.
+// ============================================================
+
+const STEP_IMAGE_SEQUENCES = [
+  {
+    keywords: [
+      "set date",
+      "set time",
+      "date time",
+      "date/time",
+      "configure date",
+      "configure time",
+      "change date",
+      "change time",
+      "how do i set the date",
+      "how do i set the time"
+    ],
+
+    steps: [
+      {
+        image: "images/Configuration_button.png",
+        caption: "Press the Configuration button, which is the gear icon on the device."
+      },
+      {
+        image: "images/Date_and_Time_inside_button.png",
+        caption: "Select the Date Time option from the menu."
+      },
+      {
+        image: "images/Date_and_time_display.png",
+        caption: "Use the left and right arrow buttons to move between the date and time fields."
+      },
+      {
+        image: "images/Date_and_time_display.png",
+        caption: "Use the up and down arrow buttons to adjust the date, hours, and minutes."
+      },
+      {
+        image: "images/Date_and_Time_in_brief.png",
+        caption: "Press ENTER to save your settings."
+      }
+    ]
+  }
+];
+
+function findMatchingStepSequence(customerQuestion, aiAnswer = "") {
+
+  // Match both the user's question and Gemini's answer.
+  // This helps even when the user asks the question differently.
+
+  const combinedText = `${customerQuestion || ""} ${aiAnswer || ""}`;
+  const combinedNormalized = normalizeForMatch(combinedText);
+
+  let bestMatch = null;
+  let bestScore = -1;
+
+  for (const entry of STEP_IMAGE_SEQUENCES) {
+
+    for (const keyword of entry.keywords) {
+
+      const keywordNormalized = normalizeForMatch(keyword);
+
+      if (keywordMatches(combinedNormalized, keywordNormalized)) {
+
+        const score = specificityScore(keywordNormalized);
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestMatch = entry;
+        }
+      }
+    }
+  }
+
+  if (!bestMatch) {
+    return null;
+  }
+
+  return bestMatch.steps.map((s, index) => ({
+    step: index + 1,
+    url: "/" + encodeURI(s.image),
+    caption: s.caption
+  }));
+}
+
 function findMatchingImage(customerQuestion, aiAnswer) {
+
   const questionNormalized = normalizeForMatch(customerQuestion);
+
   let bestTopic = null;
   let bestScore = -1;
 
@@ -601,12 +689,18 @@ function findMatchingImage(customerQuestion, aiAnswer) {
   // This makes a specific match like "4a rms" correctly win over a generic
   // one like "display", regardless of which word happens to be longer.
   // Matching is word-based (see keywordMatches), so extra words in the
-  // question (like "(3L)" between "Vrms" and "with") no longer break it.
+  // question no longer break it.
+
   for (const topic of IMAGE_MAP) {
+
     for (const keyword of topic.keywords) {
+
       const keywordNormalized = normalizeForMatch(keyword);
+
       if (keywordMatches(questionNormalized, keywordNormalized)) {
+
         const score = specificityScore(keywordNormalized);
+
         if (score > bestScore) {
           bestScore = score;
           bestTopic = topic;
@@ -615,12 +709,17 @@ function findMatchingImage(customerQuestion, aiAnswer) {
     }
   }
 
-  return bestTopic ? "/" + encodeURI(bestTopic.file) : null;
+  return bestTopic
+    ? "/" + encodeURI(bestTopic.file)
+    : null;
 }
 
 function extractUrls(text) {
+
   const urlRegex = /(https?:\/\/[^\s]+)/g;
+
   const urls = text.match(urlRegex) || [];
+
   return urls;
 }
 
@@ -1406,6 +1505,7 @@ app.post("/api/chat", async (req, res) => {
 
         const videoUrl = findMatchingVideo(customerQuestion, answer);
         const imageUrl = findMatchingImage(customerQuestion, answer);
+        const stepImages = findMatchingStepSequence(customerQuestion, answer);
         const accessLinks = extractUrls(answer);
 
         res.json({
@@ -1413,6 +1513,7 @@ app.post("/api/chat", async (req, res) => {
             section: "Getting Started / Configuration / Device Description / Harmonic Mode / Transient Mode / Waveform Mode / Trend Mode / Power and Energy Mode / Screen Snapshot Mode / Help Key / Data Export Software / General Specifications / Alarm Mode",
             videoUrl: videoUrl,
             imageUrl: imageUrl,
+            stepImages: stepImages,
             links: accessLinks
         });
 
