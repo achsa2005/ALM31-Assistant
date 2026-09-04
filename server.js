@@ -598,6 +598,40 @@ const IMAGE_MAP = [
 // ============================================================
 
 const STEP_IMAGE_SEQUENCES = [
+
+  {
+    keywords: [
+      "choice of language",
+      "select language",
+      "choose language",
+      "change language",
+      "display language",
+      "language"
+    ],
+
+    steps: [
+      {
+        image: "images/Switch_on_button.png",
+        caption: "Press the green button to turn the device on."
+      },
+
+      {
+        image: "images/Configuration_button.png",
+        caption: "Press the Configuration key."
+      },
+
+      {
+        image: "images/Yellow_key_for_display_language.png",
+        caption: "Press the yellow key next to the language you want to select."
+      },
+
+      {
+        image: "images/Next_page_for_choice_of_language.png",
+        caption: "If you do not see your language on the first screen, press the key marked with the arrow to go to the next page of languages."
+      }
+    ]
+  },
+
   {
     keywords: [
       "set date",
@@ -612,25 +646,29 @@ const STEP_IMAGE_SEQUENCES = [
       "how do i set the time"
     ],
 
-   steps: [
-  {
-    image: "images/Configuration_button.png",
-    caption: "Press the Configuration button, which is the gear icon on the device."
-  },
-  {
-    image: "images/Date_and_time_display.png",
-    caption: "Select the Date Time option from the menu."
-  },
-  {
-    image: "images/Date_and_Time_inside_button.png",
-    caption: "Use the left and right arrow buttons to move between the date and time fields."
-  },
-  {
-    image: "images/Date_and_Time_in_brief.png",
-    caption: "Press ENTER to save your settings."
+    steps: [
+      {
+        image: "images/Configuration_button.png",
+        caption: "Press the Configuration button, which is the gear icon on the device."
+      },
+
+      {
+        image: "images/Date_and_time_display.png",
+        caption: "Select the Date Time option from the menu."
+      },
+
+      {
+        image: "images/Date_and_Time_inside_button.png",
+        caption: "Use the left and right arrow buttons to move between the date and time fields."
+      },
+
+      {
+        image: "images/Date_and_Time_in_brief.png",
+        caption: "Press ENTER to save your settings."
+      }
+    ]
   }
-]
-  }
+
 ];
 
 function findMatchingStepSequence(customerQuestion, aiAnswer = "") {
