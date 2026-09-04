@@ -64,7 +64,6 @@
             animation: goldenWave2 8s ease-in-out infinite alternate;
         }
 
-        /* Extra wave ribbons */
         body {
             isolation: isolate;
         }
@@ -454,8 +453,8 @@
         }
 
         /* ============================================================
-           DATE & TIME STEP-BY-STEP IMAGE ANIMATION
-           Only used when backend sends stepImages
+           DATE & TIME STEP-BY-STEP IMAGES
+           All 4 images stay visible vertically
            ============================================================ */
 
         .step-sequence-container {
@@ -475,49 +474,53 @@
             border-bottom: 1px solid #eadfbf;
         }
 
-        .step-animation {
-            position: relative;
-            width: 100%;
-            min-height: 260px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .step-item {
             padding: 15px;
+            border-bottom: 1px solid #eadfbf;
+            animation: stepAppear .5s ease;
         }
 
-        .step-animation img {
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        .step-item img {
+            display: block;
             max-width: 100%;
-            max-height: 300px;
+            max-height: 320px;
             width: auto;
             height: auto;
+            margin: 0 auto;
             object-fit: contain;
             border-radius: 8px;
-
-            opacity: 0;
-            transform: translateX(25px);
-            transition:
-                opacity .5s ease,
-                transform .5s ease;
         }
 
-        .step-animation img.show {
-            opacity: 1;
-            transform: translateX(0);
+        .step-number {
+            color: #c98700;
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-align: left;
         }
 
         .step-caption {
-            padding: 10px 15px 14px;
+            padding: 10px 5px 5px;
             text-align: center;
             color: #555;
             font-size: 13px;
             line-height: 1.5;
         }
 
-        .step-counter {
-            text-align: center;
-            font-size: 11px;
-            color: #999;
-            padding-bottom: 10px;
+        @keyframes stepAppear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .loading {
@@ -757,12 +760,8 @@
                 font-size: 14px;
             }
 
-            .step-animation {
-                min-height: 220px;
-            }
-
-            .step-animation img {
-                max-height: 240px;
+            .step-item img {
+                max-height: 260px;
             }
         }
     </style>
@@ -863,7 +862,6 @@
                 </button>
 
             </div>
-
         </div>
 
         <!-- FLOATING ALM31 ASSISTANT -->
@@ -1006,62 +1004,79 @@
         // DOM ELEMENTS
         // ============================================================
 
-        const chatBox = document.getElementById('chatBox');
-        const messageInput = document.getElementById('messageInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const micBtn = document.getElementById('micBtn');
+        const chatBox =
+            document.getElementById('chatBox');
+
+        const messageInput =
+            document.getElementById('messageInput');
+
+        const sendBtn =
+            document.getElementById('sendBtn');
+
+        const micBtn =
+            document.getElementById('micBtn');
 
 
         // ============================================================
         // LANGUAGE SELECTION
         // ============================================================
 
-        // BCP-47 tags used by the Web Speech API
         const SPEECH_LANG_MAP = {
+
             en: 'en-US',
+
             ta: 'ta-IN',
+
             hi: 'hi-IN',
+
             te: 'te-IN',
+
             ml: 'ml-IN',
+
             kn: 'kn-IN'
+
         };
 
         let selectedLanguage = 'en';
 
 
-        function setLanguage(code, sourceBar) {
+        function setLanguage(code) {
 
             selectedLanguage = code;
 
-            // Update button highlighting
-            document.querySelectorAll('.lang-btn').forEach(btn => {
+            document
+                .querySelectorAll('.lang-btn')
+                .forEach(btn => {
 
-                btn.classList.toggle(
-                    'active',
-                    btn.dataset.lang === code
-                );
+                    btn.classList.toggle(
+                        'active',
+                        btn.dataset.lang === code
+                    );
 
-            });
+                });
 
-            // Update mic recognition language
+
             if (recognition) {
 
                 recognition.lang =
-                    SPEECH_LANG_MAP[code] || 'en-US';
+                    SPEECH_LANG_MAP[code] ||
+                    'en-US';
 
             }
 
         }
 
 
-        document.querySelectorAll('.lang-btn').forEach(btn => {
+        document
+            .querySelectorAll('.lang-btn')
+            .forEach(btn => {
 
-            btn.addEventListener(
-                'click',
-                () => setLanguage(btn.dataset.lang)
-            );
+                btn.addEventListener(
+                    'click',
+                    () => setLanguage(btn.dataset.lang)
+                );
 
-        });
+            });
 
 
         // ============================================================
@@ -1077,10 +1092,13 @@
 
         if (SpeechRecognition) {
 
-            recognition = new SpeechRecognition();
+            recognition =
+                new SpeechRecognition();
 
             recognition.continuous = false;
+
             recognition.interimResults = false;
+
             recognition.lang =
                 SPEECH_LANG_MAP[selectedLanguage];
 
@@ -1088,6 +1106,7 @@
             recognition.onstart = () => {
 
                 micBtn.classList.add('recording');
+
                 micBtn.textContent = '🔴';
 
             };
@@ -1097,17 +1116,24 @@
 
                 const transcript =
                     Array.from(event.results)
-                        .map(result => result[0].transcript)
+                        .map(
+                            result =>
+                                result[0].transcript
+                        )
                         .join('');
 
-                messageInput.value = transcript;
+                messageInput.value =
+                    transcript;
 
             };
 
 
             recognition.onend = () => {
 
-                micBtn.classList.remove('recording');
+                micBtn.classList.remove(
+                    'recording'
+                );
+
                 micBtn.textContent = '🎤';
 
             };
@@ -1120,8 +1146,12 @@
                     event.error
                 );
 
-                micBtn.classList.remove('recording');
+                micBtn.classList.remove(
+                    'recording'
+                );
+
                 micBtn.textContent = '🎤';
+
 
                 if (event.error !== 'no-speech') {
 
@@ -1135,30 +1165,38 @@
             };
 
 
-            micBtn.addEventListener('click', () => {
+            micBtn.addEventListener(
+                'click',
+                () => {
 
-                if (
-                    micBtn.classList.contains('recording')
-                ) {
+                    if (
+                        micBtn.classList.contains(
+                            'recording'
+                        )
+                    ) {
 
-                    recognition.abort();
+                        recognition.abort();
 
-                } else {
+                    } else {
 
-                    recognition.lang =
-                        SPEECH_LANG_MAP[selectedLanguage] ||
-                        'en-US';
+                        recognition.lang =
+                            SPEECH_LANG_MAP[
+                                selectedLanguage
+                            ] || 'en-US';
 
-                    recognition.start();
+                        recognition.start();
+
+                    }
 
                 }
-
-            });
+            );
 
         } else {
 
             micBtn.style.opacity = '0.5';
-            micBtn.style.cursor = 'not-allowed';
+
+            micBtn.style.cursor =
+                'not-allowed';
 
             micBtn.title =
                 'Speech recognition not supported in your browser';
@@ -1235,7 +1273,9 @@
 
 
             const normalizeCode = (code) =>
-                code.replace(/_/g, '-').toLowerCase();
+                code
+                    .replace(/_/g, '-')
+                    .toLowerCase();
 
 
             const targetNormalized =
@@ -1248,11 +1288,12 @@
 
             // Strategy 1: Exact match
 
-            let voice = cachedVoices.find(
-                v =>
-                    normalizeCode(v.lang) ===
-                    targetNormalized
-            );
+            let voice =
+                cachedVoices.find(
+                    v =>
+                        normalizeCode(v.lang) ===
+                        targetNormalized
+                );
 
 
             if (voice) {
@@ -1268,11 +1309,13 @@
 
             // Strategy 2: Language prefix
 
-            voice = cachedVoices.find(
-                v =>
-                    normalizeCode(v.lang).split('-')[0] ===
-                    targetPrefix
-            );
+            voice =
+                cachedVoices.find(
+                    v =>
+                        normalizeCode(v.lang)
+                            .split('-')[0] ===
+                        targetPrefix
+                );
 
 
             if (voice) {
@@ -1288,11 +1331,12 @@
 
             // Strategy 3: Starts with language prefix
 
-            voice = cachedVoices.find(
-                v =>
-                    normalizeCode(v.lang)
-                        .startsWith(targetPrefix)
-            );
+            voice =
+                cachedVoices.find(
+                    v =>
+                        normalizeCode(v.lang)
+                            .startsWith(targetPrefix)
+                );
 
 
             if (voice) {
@@ -1378,19 +1422,29 @@
                 new SpeechSynthesisUtterance(text);
 
 
-            utterance.voice = matchedVoice;
-            utterance.lang = matchedVoice.lang;
+            utterance.voice =
+                matchedVoice;
+
+            utterance.lang =
+                matchedVoice.lang;
+
             utterance.rate = 1.0;
+
             utterance.pitch = 1.0;
+
             utterance.volume = 1.0;
 
 
             utterance.onstart = () =>
-                console.log('🔊 Speaking...');
+                console.log(
+                    '🔊 Speaking...'
+                );
 
 
             utterance.onend = () =>
-                console.log('✅ Done');
+                console.log(
+                    '✅ Done'
+                );
 
 
             utterance.onerror = e =>
@@ -1432,22 +1486,22 @@
             const noticeMap = {
 
                 ml:
-                    'Voice playback isn\'t available in Malayalam on this device/browser. The text answer above is still accurate.',
+                    "Voice playback isn't available in Malayalam on this device/browser. The text answer above is still accurate.",
 
                 te:
-                    'Voice playback isn\'t available in Telugu on this device/browser. The text answer above is still accurate.',
+                    "Voice playback isn't available in Telugu on this device/browser. The text answer above is still accurate.",
 
                 ta:
-                    'Voice playback isn\'t available in Tamil on this device/browser. The text answer above is still accurate.',
+                    "Voice playback isn't available in Tamil on this device/browser. The text answer above is still accurate.",
 
                 hi:
-                    'Voice playback isn\'t available in Hindi on this device/browser. The text answer above is still accurate.',
+                    "Voice playback isn't available in Hindi on this device/browser. The text answer above is still accurate.",
 
                 en:
-                    'Voice playback isn\'t available on this device/browser. The text answer above is still accurate.',
+                    "Voice playback isn't available on this device/browser. The text answer above is still accurate.",
 
                 kn:
-                    'Voice playback isn\'t available in Kannada on this device/browser. The text answer above is still accurate.'
+                    "Voice playback isn't available in Kannada on this device/browser. The text answer above is still accurate."
 
             };
 
@@ -1461,17 +1515,26 @@
                 document.createElement('div');
 
 
-            noticeDiv.style.fontSize = '12px';
-            noticeDiv.style.color = '#999';
-            noticeDiv.style.fontStyle = 'italic';
-            noticeDiv.style.marginTop = '8px';
+            noticeDiv.style.fontSize =
+                '12px';
+
+            noticeDiv.style.color =
+                '#999';
+
+            noticeDiv.style.fontStyle =
+                'italic';
+
+            noticeDiv.style.marginTop =
+                '8px';
 
 
             noticeDiv.textContent =
                 '🔇 ' + message;
 
 
-            chatBox.appendChild(noticeDiv);
+            chatBox.appendChild(
+                noticeDiv
+            );
 
             scrollToBottom();
 
@@ -1491,16 +1554,12 @@
             if (!message) return;
 
 
-            // Stop any ongoing speech
-
             if (window.speechSynthesis) {
 
                 window.speechSynthesis.cancel();
 
             }
 
-
-            // Display user message
 
             displayMessage(
                 message,
@@ -1512,8 +1571,6 @@
 
             sendBtn.disabled = true;
 
-
-            // Show loading indicator
 
             showLoading();
 
@@ -1611,15 +1668,24 @@
                 document.createElement('div');
 
 
-            textDiv.classList.add('text');
+            textDiv.classList.add(
+                'text'
+            );
 
 
-            textDiv.textContent = text;
+            textDiv.textContent =
+                text;
 
 
-            messageDiv.appendChild(textDiv);
+            messageDiv.appendChild(
+                textDiv
+            );
 
-            chatBox.appendChild(messageDiv);
+
+            chatBox.appendChild(
+                messageDiv
+            );
+
 
             scrollToBottom();
 
@@ -1675,14 +1741,19 @@
                 data.links.length > 0
             ) {
 
-                data.links.forEach(link => {
+                data.links.forEach(
+                    link => {
 
-                    answerText =
-                        answerText
-                            .replace(link, '')
-                            .trim();
+                        answerText =
+                            answerText
+                                .replace(
+                                    link,
+                                    ''
+                                )
+                                .trim();
 
-                });
+                    }
+                );
 
             }
 
@@ -1691,17 +1762,21 @@
             // FORMAT TEXT WITH LINE BREAKS
             // ========================================================
 
-            // FIXED:
-            // Use ^ anchor and m flag so "IP20."
-            // is NOT treated as a numbered step.
+            /*
+                IMPORTANT:
+                Correct numbered-step detection.
+
+                This avoids treating things like IP20.
+                as numbered steps.
+            */
 
             const hasSteps =
-                /^\d+\.\s/m.test(answerText);
+                /^\d+\.\s/m.test(
+                    answerText
+                );
 
 
             if (hasSteps) {
-
-                // Format as steps
 
                 const steps =
                     answerText.split(
@@ -1710,12 +1785,14 @@
 
 
                 steps.forEach(
-                    (step, index) => {
+                    step => {
 
                         if (step.trim()) {
 
                             const stepEl =
-                                document.createElement('p');
+                                document.createElement(
+                                    'p'
+                                );
 
 
                             stepEl.style.marginBottom =
@@ -1741,8 +1818,6 @@
 
             } else {
 
-                // Regular text with preserved line breaks
-
                 const paragraphs =
                     answerText
                         .split('\n')
@@ -1757,7 +1832,9 @@
                         para => {
 
                             const pEl =
-                                document.createElement('p');
+                                document.createElement(
+                                    'p'
+                                );
 
 
                             pEl.style.marginBottom =
@@ -1780,8 +1857,6 @@
                     );
 
                 } else {
-
-                    // Single paragraph
 
                     answerDiv.textContent =
                         answerText;
@@ -1840,7 +1915,9 @@
                     link => {
 
                         const linkElement =
-                            document.createElement('a');
+                            document.createElement(
+                                'a'
+                            );
 
 
                         linkElement.classList.add(
@@ -1848,15 +1925,15 @@
                         );
 
 
-                        linkElement.href = link;
+                        linkElement.href =
+                            link;
 
-                        linkElement.target = '_blank';
+                        linkElement.target =
+                            '_blank';
 
                         linkElement.rel =
                             'noopener noreferrer';
 
-
-                        // Extract domain name
 
                         const urlObj =
                             new URL(link);
@@ -1896,7 +1973,9 @@
             if (data.videoUrl) {
 
                 const videoContainer =
-                    document.createElement('div');
+                    document.createElement(
+                        'div'
+                    );
 
 
                 videoContainer.classList.add(
@@ -1905,7 +1984,9 @@
 
 
                 const video =
-                    document.createElement('video');
+                    document.createElement(
+                        'video'
+                    );
 
 
                 video.src =
@@ -1914,7 +1995,8 @@
 
                 video.controls = true;
 
-                video.style.width = '100%';
+                video.style.width =
+                    '100%';
 
 
                 videoContainer.appendChild(
@@ -1936,7 +2018,9 @@
             if (data.imageUrl) {
 
                 const imageContainer =
-                    document.createElement('div');
+                    document.createElement(
+                        'div'
+                    );
 
 
                 imageContainer.classList.add(
@@ -1945,7 +2029,9 @@
 
 
                 const img =
-                    document.createElement('img');
+                    document.createElement(
+                        'img'
+                    );
 
 
                 img.src =
@@ -1969,19 +2055,19 @@
 
 
             // ========================================================
-            // ⭐ DATE & TIME 4-IMAGE ANIMATION
+            // ⭐ DATE & TIME 4-IMAGE STEP-BY-STEP DISPLAY
             // ========================================================
             //
-            // This appears ONLY when backend sends stepImages.
+            // ALL FOUR IMAGES ARE SHOWN.
             //
-            // Date & Time:
             // Step 1 -> Configuration button
-            // Step 2 -> Date & Time menu
-            // Step 3 -> Date & Time display
-            // Step 4 -> Date & Time in brief
+            // Step 2 -> Date and Time display
+            // Step 3 -> Date and Time inside button
+            // Step 4 -> Date and Time in brief
             //
-            // Other topics:
-            // No stepImages -> nothing happens here.
+            // Nothing is replaced.
+            // Nothing disappears.
+            // No setInterval.
             //
             // ========================================================
 
@@ -1991,7 +2077,9 @@
             ) {
 
                 const sequenceContainer =
-                    document.createElement('div');
+                    document.createElement(
+                        'div'
+                    );
 
 
                 sequenceContainer.classList.add(
@@ -2002,7 +2090,9 @@
                 // Title
 
                 const title =
-                    document.createElement('div');
+                    document.createElement(
+                        'div'
+                    );
 
 
                 title.classList.add(
@@ -2019,169 +2109,104 @@
                 );
 
 
-                // Image area
+                // ----------------------------------------------------
+                // CREATE ALL STEPS VERTICALLY
+                // ----------------------------------------------------
 
-                const animationArea =
-                    document.createElement('div');
+                data.stepImages.forEach(
+                    (step, index) => {
 
-
-                animationArea.classList.add(
-                    'step-animation'
-                );
-
-
-                const stepImage =
-                    document.createElement('img');
+                        const stepItem =
+                            document.createElement(
+                                'div'
+                            );
 
 
-                stepImage.alt =
-                    'ALM31 Date and Time setup';
+                        stepItem.classList.add(
+                            'step-item'
+                        );
 
 
-                animationArea.appendChild(
-                    stepImage
-                );
+                        // Step number
+
+                        const stepNumber =
+                            document.createElement(
+                                'div'
+                            );
 
 
-                sequenceContainer.appendChild(
-                    animationArea
-                );
+                        stepNumber.classList.add(
+                            'step-number'
+                        );
 
 
-                // Caption
-
-                const caption =
-                    document.createElement('div');
+                        stepNumber.textContent =
+                            `Step ${index + 1}`;
 
 
-                caption.classList.add(
-                    'step-caption'
-                );
+                        stepItem.appendChild(
+                            stepNumber
+                        );
 
 
-                sequenceContainer.appendChild(
-                    caption
-                );
+                        // Image
 
+                        const stepImage =
+                            document.createElement(
+                                'img'
+                            );
 
-                // Counter
-
-                const counter =
-                    document.createElement('div');
-
-
-                counter.classList.add(
-                    'step-counter'
-                );
-
-
-                sequenceContainer.appendChild(
-                    counter
-                );
-
-
-                // Add animation container
-
-                responseContent.appendChild(
-                    sequenceContainer
-                );
-
-
-                // Start at Step 1
-
-                let currentStep = 0;
-
-
-                function showStep(index) {
-
-                    const step =
-                        data.stepImages[index];
-
-
-                    if (!step) return;
-
-
-                    // Fade out
-
-                    stepImage.classList.remove(
-                        'show'
-                    );
-
-
-                    setTimeout(() => {
 
                         stepImage.src =
                             step.url;
+
+
+                        stepImage.alt =
+                            `ALM31 Date and Time setup - Step ${index + 1}`;
+
+
+                        stepItem.appendChild(
+                            stepImage
+                        );
+
+
+                        // Caption
+
+                        const caption =
+                            document.createElement(
+                                'div'
+                            );
+
+
+                        caption.classList.add(
+                            'step-caption'
+                        );
 
 
                         caption.textContent =
                             step.caption;
 
 
-                        counter.textContent =
-                            `Step ${index + 1} of ${data.stepImages.length}`;
-
-
-                        // Fade in
-
-                        requestAnimationFrame(() => {
-
-                            stepImage.classList.add(
-                                'show'
-                            );
-
-                        });
-
-                    }, 300);
-
-                }
-
-
-                // Show first image
-
-                showStep(currentStep);
-
-
-                // Automatically move to next image
-                // Every 3 seconds
-
-                const stepInterval =
-                    setInterval(() => {
-
-                        currentStep++;
-
-
-                        if (
-                            currentStep >=
-                            data.stepImages.length
-                        ) {
-
-                            clearInterval(
-                                stepInterval
-                            );
-
-
-                            // Keep final image visible
-
-                            currentStep =
-                                data.stepImages.length - 1;
-
-
-                            showStep(
-                                currentStep
-                            );
-
-
-                            return;
-
-                        }
-
-
-                        showStep(
-                            currentStep
+                        stepItem.appendChild(
+                            caption
                         );
 
-                    }, 3000);
+
+                        // Add this complete step
+
+                        sequenceContainer.appendChild(
+                            stepItem
+                        );
+
+                    }
+                );
+
+
+                // Add complete sequence
+
+                responseContent.appendChild(
+                    sequenceContainer
+                );
 
             }
 
@@ -2193,7 +2218,9 @@
             if (data.section) {
 
                 const badge =
-                    document.createElement('div');
+                    document.createElement(
+                        'div'
+                    );
 
 
                 badge.classList.add(
@@ -2212,7 +2239,9 @@
             }
 
 
-            // Add response to message
+            // ========================================================
+            // ADD RESPONSE TO MESSAGE
+            // ========================================================
 
             messageDiv.appendChild(
                 responseContent
@@ -2231,14 +2260,17 @@
             // AUTOMATICALLY SPEAK RESPONSE
             // ========================================================
 
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                speakResponse(
-                    answerText,
-                    selectedLanguage
-                );
+                    speakResponse(
+                        answerText,
+                        selectedLanguage
+                    );
 
-            }, 500);
+                },
+                500
+            );
 
         }
 
@@ -2250,7 +2282,9 @@
         function showError(message) {
 
             const messageDiv =
-                document.createElement('div');
+                document.createElement(
+                    'div'
+                );
 
 
             messageDiv.classList.add(
@@ -2260,7 +2294,9 @@
 
 
             const errorDiv =
-                document.createElement('div');
+                document.createElement(
+                    'div'
+                );
 
 
             errorDiv.classList.add(
@@ -2294,7 +2330,9 @@
         function showLoading() {
 
             const messageDiv =
-                document.createElement('div');
+                document.createElement(
+                    'div'
+                );
 
 
             messageDiv.classList.add(
@@ -2308,7 +2346,9 @@
 
 
             const loading =
-                document.createElement('div');
+                document.createElement(
+                    'div'
+                );
 
 
             loading.classList.add(
@@ -2361,12 +2401,15 @@
 
         function scrollToBottom() {
 
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                chatBox.scrollTop =
-                    chatBox.scrollHeight;
+                    chatBox.scrollTop =
+                        chatBox.scrollHeight;
 
-            }, 0);
+                },
+                0
+            );
 
         }
 
