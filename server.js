@@ -598,6 +598,34 @@ const IMAGE_MAP = [
 // ============================================================
 
 const STEP_IMAGE_SEQUENCES = [
+  {
+    title: "🖥️ Display",
+
+    keywords: [
+        "display",
+        "display settings",
+        "brightness",
+        "screen brightness",
+        "night mode",
+        "screen shutdown",
+        "display menu"
+    ],
+
+    steps: [
+        {
+            image: "images/Configuration_button.png",
+            caption: "Press the Configuration button, which is the gear icon on your device."
+        },
+        {
+            image: "images/Display_Menu.png",
+            caption: "Select the Display menu."
+        },
+        {
+            image: "images/Display_in_brief.png",
+            caption: "From here, you can adjust the display settings such as Brightness, Colors, Night Mode, and Screen Shutdown."
+        }
+    ]
+},
 
   {
     title: "🌐 Choice of Language",
